@@ -12,7 +12,7 @@ int is_valid_greater(const binary_tree_t *tree, int value)
 {
 	if (!tree)
 		return (0);
-	if (tree->n < value)
+	if (tree->n <= value)
 		return (0);
 	if (tree->left)
 	{
@@ -39,7 +39,7 @@ int is_valid_less(const binary_tree_t *tree, int value)
 {
 	if (!tree)
 		return (0);
-	if (tree->n > value)
+	if (tree->n >= value)
 		return (0);
 	if (tree->left)
 	{
