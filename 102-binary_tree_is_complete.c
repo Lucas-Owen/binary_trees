@@ -67,7 +67,7 @@ int tree_is_complete(const binary_tree_t *tree, size_t *depth)
 	}
 	if (tree->left)
 	{
-		if (tree_is_complete(tree->left, depth))
+		if (!tree->left->left)
 		{
 			(*depth)--;
 			return (1);
