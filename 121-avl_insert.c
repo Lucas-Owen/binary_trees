@@ -43,34 +43,30 @@ void balance_left_subtree(avl_t *tree)
  * a newly inserted node. The avl tree is rebalanced if need be
  *
  * @tree: The newly inserted node
- * @root: Original root of the tree
  * Return: void
  */
-void check_balance(avl_t *tree, avl_t **root)
+avl_t *check_balance(avl_t *tree)
 {
 	int balance;
 
 	if (!tree)
-		return;
+		return (NULL);
 	if (!tree->parent)
 	{
-		*root = tree;
-		return;
+		return (tree);
 	}
 	balance = binary_tree_balance(tree->parent->parent);
 	if (balance < -1)
 	{
 		balance_right_subtree(tree);
-		check_balance(tree, root);
-		return;
+		return (check_balance(tree));
 	}
 	if (balance > 1)
 	{
 		balance_left_subtree(tree);
-		check_balance(tree, root);
-		return;
+		return (check_balance(tree));
 	}
-	check_balance(tree->parent, root);
+	return (check_balance(tree->parent));
 }
 
 /**
@@ -119,6 +115,6 @@ avl_t *avl_insert(avl_t **tree, int value)
 		else
 			return (NULL);
 	}
-	check_balance(subtree, tree);
+	*tree = check_balance(subtree);
 	return (subtree);
 }
