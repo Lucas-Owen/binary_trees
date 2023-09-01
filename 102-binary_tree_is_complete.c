@@ -40,10 +40,9 @@ size_t t_depth(const binary_tree_t *tree)
  *
  * @tree: pointer to the root node of the tree
  * @depth: depth of the deepest node
- * @past_max: Boolean to check if we're past the deepest nodes when traversing
  * Return: int - 1 if complete, 0 otherwise or when root is NULL
  */
-int tree_is_complete(const binary_tree_t *tree, size_t *depth, char *past_max)
+int tree_is_complete(const binary_tree_t *tree, size_t *depth)
 {
 	size_t node_depth = t_depth(tree);
 
@@ -53,21 +52,26 @@ int tree_is_complete(const binary_tree_t *tree, size_t *depth, char *past_max)
 	{
 		if (*depth == node_depth)
 			return (1);
-		if (*past_max)
-			return (0);
-		if (tree->parent->right == tree && node_depth == *depth - 1)
+		if (tree->parent->right == tree && *depth - 1 == node_depth)
 		{
 			(*depth)--;
-			*past_max = 1;
 			return (1);
 		}
 		return (0);
 	}
-	if (tree_is_complete(tree->left, depth, past_max))
+	if (tree->left && tree->right)
 	{
-		if (tree->right)
-			return (tree_is_complete(tree->right, depth, past_max));
-		return (1);
+		if (tree_is_complete(tree->left, depth))
+			return (tree_is_complete(tree->right, depth));
+		return (0);
+	}
+	if (tree->left)
+	{
+		if (tree_is_complete(tree->left, depth))
+		{
+			(*depth)--;
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -82,7 +86,6 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 {
 	binary_tree_t *node;
 	size_t depth;
-	char past_max = 0;
 
 	if (!tree)
 		return (0);
@@ -90,5 +93,5 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 	while (node->left)
 		node = node->left;
 	depth = t_depth(node);
-	return (tree_is_complete(tree, &depth, &past_max));
+	return (tree_is_complete(tree, &depth));
 }

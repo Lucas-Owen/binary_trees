@@ -36,7 +36,7 @@ void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
 	my_list *nodes, *last, *curr;
 
-	if (!tree)
+	if (!tree || !func)
 		return;
 
 	nodes = new_list();
